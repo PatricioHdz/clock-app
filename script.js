@@ -5,28 +5,13 @@ const details = document.querySelector(".details");
 const period = document.querySelector(".period");
 const expand = document.querySelector(".expand");
 
-function getQuote() {
-  axios
-    .get("https://programming-quotesapi.vercel.app/api/random")
-    .then((quotesRes) => {
-      const chosenQuote = quotesRes.data;
-      console.log(chosenQuote);
-
-      document.getElementById("quote").textContent = chosenQuote.quote;
-
-      if (chosenQuote.author == null) {
-        author.textContent = "Unknown author";
-      } else {
-        author.textContent = chosenQuote.author;
-      }
-    })
-    .catch((err) => console.error(err));
-}
-
 function getTime() {
   let currentTime = new Date();
   let hour = currentTime.getHours();
   let minute = currentTime.getMinutes();
+  let exactDate = currentTime.toDateString();
+  console.log(exactDate);
+  
 
   //Time of day
   let greet = "";
@@ -38,6 +23,7 @@ function getTime() {
     greet = "evening";
   }
   document.querySelector(".currently__greeting").textContent = `good ${greet}`;
+  document.getElementById("exact-date").textContent = exactDate;
 
   //Bg and icon
   if (hour >= 5 && hour <= 17) {
@@ -84,9 +70,9 @@ function getTimeZone() {
       document.querySelector(".region").textContent = region.abbreviation;
       //Details
       document.getElementById("timezone").textContent = region.timezone;
-      document.getElementById("year-day").textContent = region.day_of_year;
-      document.getElementById("week-day").textContent = region.day_of_week;
-      document.getElementById("week-number").textContent = region.week_number;
+      // document.getElementById("year-day").textContent = region.day_of_year;
+      // document.getElementById("week-day").textContent = region.day_of_week;
+      // document.getElementById("week-number").textContent = region.week_number;
     })
     .catch((err) => console.error(err));
 }
@@ -100,7 +86,7 @@ function getLocation() {
       const countryCode = ipLocation.country_code;
       document.querySelector(
         ".currently__location"
-      ).textContent = `in ${regionName}, ${countryCode}`;
+      ).textContent = `${regionName}, ${countryCode}`;
     })
     .catch((err) => console.error(err));
 }
@@ -130,7 +116,6 @@ function getLocation() {
 //   .catch((err) => console.error(err));
 
 getTime();
-getQuote();
 getTimeZone();
 getLocation();
 
@@ -149,6 +134,3 @@ function showDetails() {
   arrow.classList.toggle("rotate");
 }
 expand.addEventListener("click", showDetails);
-
-//Random quote
-document.getElementById("refresh").addEventListener("click", getQuote);
